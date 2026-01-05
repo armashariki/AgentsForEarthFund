@@ -1,4 +1,4 @@
-#!/Users/samdey/Documents/GitHub/AIAgentLab/Research Assistant Agent/.venv/bin/python3.12
+#!/Users/amenramashariki/Desktop/AIAgentLab/Research Assistant Agent/.venv/bin/python3.12
 """A command line tool for extracting text and images from PDF and
 output it to plain text, html, xml or tags.
 """

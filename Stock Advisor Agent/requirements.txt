@@ -1,8 +1,0 @@
-streamlit
-pandas
-numpy
-yfinance
-pydantic
-python-dotenv
-crewai
-openai

@@ -34,11 +34,11 @@ import sysconfig
 import glob
 
 try:  # pragma: no cover (py2 only)
-    from ConfigParser import SafeConfigParser as ConfigParser
+    from ConfigParser import SafeConfigParser as ConfigParser  # pyright: ignore[reportMissingImports]
     # noinspection PyCompatibility
-    import urllib2
+    import urllib2  # pyright: ignore[reportMissingImports]
     iteritems = operator.methodcaller('iteritems')
-    import httplib
+    import httplib  # pyright: ignore[reportMissingImports]
     IncompleteRead = httplib.IncompleteRead
 except ImportError:  # pragma: no cover (py3 only)
     from configparser import ConfigParser
@@ -48,7 +48,7 @@ except ImportError:  # pragma: no cover (py3 only)
     import http
     IncompleteRead = http.client.IncompleteRead
 
-nodeenv_version = '1.9.1'
+nodeenv_version = '1.10.0'
 
 join = os.path.join
 abspath = os.path.abspath
@@ -138,7 +138,7 @@ class Config(object):
 
         if os.path.exists(".node-version"):
             with open(".node-version", "r") as v_file:
-                setattr(cls, "node", v_file.readlines(1)[0].strip())
+                setattr(cls, "node", v_file.readline().strip().lstrip("v"))
 
     @classmethod
     def _dump(cls):
@@ -552,7 +552,7 @@ def get_node_bin_url(version):
         'i686':   'x86',
         'x86_64': 'x64',  # Linux Ubuntu 64
         'amd64':  'x64',  # FreeBSD 64bits
-        'AMD64':  'x64',  # Windows Server 2012 R2 (x64)
+        'amd64':  'x64',  # Windows Server 2012 R2 (x64)
         'armv6l': 'armv6l',     # arm
         'armv7l': 'armv7l',
         'armv8l': 'armv7l',
@@ -567,7 +567,7 @@ def get_node_bin_url(version):
     }
     sysinfo = {
         'system': platform.system().lower(),
-        'arch': archmap[platform.machine()],
+        'arch': archmap[platform.machine().lower()],
     }
     if is_WIN or is_CYGWIN:
         postfix = '-win-%(arch)s.zip' % sysinfo
@@ -816,7 +816,7 @@ def install_npm(env_dir, _src_dir, args):
     )
     proc = subprocess.Popen(
         (
-            'bash', '-c',
+            'sh', '-c',
             '. {0} && npm install -g npm@{1}'.format(
                 _quote(join(env_dir, 'bin', 'activate')),
                 args.npm,
@@ -934,14 +934,10 @@ def install_activate(env_dir, args):
     prompt = args.prompt or '(%s)' % os.path.basename(os.path.abspath(env_dir))
 
     if args.node == "system":
-        env = os.environ.copy()
-        env.update({'PATH': remove_env_bin_from_path(env['PATH'], bin_dir)})
+        path_var = remove_env_bin_from_path(os.environ['PATH'], bin_dir)
         for candidate in ("nodejs", "node"):
-            which_node_output, _ = subprocess.Popen(
-                ["which", candidate],
-                stdout=subprocess.PIPE, env=env).communicate()
-            shim_node = clear_output(which_node_output)
-            if shim_node:
+            shim_node = shutil.which(candidate, path=path_var)
+            if shim_node is not None:
                 break
         assert shim_node, "Did not find nodejs or node system executable"
 
@@ -1045,19 +1041,39 @@ def print_node_versions():
         logger.info('\t'.join(chunk))
 
 
+def _get_last_node_version(lts=False):
+    """
+    Return last node.js version matching the filter
+    """
+    print({"x86": is_x86_64_musl(), "risc": is_riscv64(), "lts": lts})
+
+    def version_filter(v):
+        if lts and not v['lts']:
+            return False
+
+        if is_x86_64_musl() and "linux-x64-musl" not in v['files']:
+            return False
+        elif is_riscv64() and "linux-riscv64" not in v['files']:
+            return False
+
+        return True
+
+    return next((v['version'].lstrip('v')
+                 for v in _get_versions_json() if version_filter(v)), None)
+
+
 def get_last_stable_node_version():
     """
     Return last stable node.js version
     """
-    return _get_versions_json()[0]['version'].lstrip('v')
+    return _get_last_node_version()
 
 
 def get_last_lts_node_version():
     """
     Return the last node.js version marked as LTS
     """
-    return next((v['version'].lstrip('v')
-                 for v in _get_versions_json() if v['lts']), None)
+    return _get_last_node_version(lts=True)
 
 
 def get_env_dir(args):
@@ -1068,6 +1084,8 @@ def get_env_dir(args):
             res = sys.prefix
         elif 'CONDA_PREFIX' in os.environ:
             res = sys.prefix
+        elif 'VIRTUAL_ENV' in os.environ:
+            res = os.environ['VIRTUAL_ENV']
         else:
             logger.error('No python virtualenv is available')
             sys.exit(2)
@@ -1157,7 +1175,7 @@ set -e NODE_VIRTUAL_ENV_DISABLE_PROMPT
 """,
 }
 
-SHIM = """#!/usr/bin/env bash
+SHIM = """#!/usr/bin/env sh
 export NODE_PATH='__NODE_VIRTUAL_ENV__/lib/node_modules'
 export NPM_CONFIG_PREFIX='__NODE_VIRTUAL_ENV__'
 export npm_config_prefix='__NODE_VIRTUAL_ENV__'
@@ -1259,7 +1277,7 @@ $env:PATH = "$env:NODE_VIRTUAL_ENV\Scripts;$env:PATH"
 
 ACTIVATE_SH = r"""
 
-# This file must be used with "source bin/activate" *from bash*
+# This file must be used with "source bin/activate" *from sh*
 # you cannot run it directly
 
 deactivate_node () {

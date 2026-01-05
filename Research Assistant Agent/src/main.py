@@ -1,3 +1,17 @@
+"""
+Deep Research Assistant Agent - CLI Entry Point
+
+Command-line interface for running the multi-agent research system.
+Supports topic input and optional URL list for targeted research.
+
+Copyright (c) 2024 Bezos Earth Fund
+All rights reserved.
+
+Author: [Your Name], Bezos Earth Fund
+Contact: [email@bezosearthfund.org]
+Version: 1.0.0
+"""
+
 from pathlib import Path
 import sys
 from typing import List
@@ -8,7 +22,7 @@ from src.crew import build_crew
 from src.tools import write_file
 
 
-# Always load .env from project root (reliable in VS Code / Replit)
+# Always load .env from project root
 ROOT = Path(__file__).resolve().parents[1]
 load_dotenv(ROOT / ".env")
 
