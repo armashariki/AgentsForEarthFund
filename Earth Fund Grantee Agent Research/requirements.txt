@@ -1,0 +1,9 @@
+crewai
+anthropic
+openai
+google-generativeai
+python-dotenv
+requests
+beautifulsoup4
+streamlit
+pypdf
