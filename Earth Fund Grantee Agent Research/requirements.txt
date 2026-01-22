@@ -1,9 +1,36 @@
-crewai
-anthropic
-openai
-google-generativeai
-python-dotenv
-requests
-beautifulsoup4
-streamlit
-pypdf
+# Grant Proposal Analyzer - Dependencies
+# AI for Climate & Nature
+# Enterprise-ready for Docker deployment with 5-10 concurrent users
+
+# Core AI/Agent Framework
+crewai>=0.28.0
+
+# LLM Providers
+anthropic>=0.18.0
+openai>=1.0.0
+google-generativeai>=0.3.0
+
+# Web Framework
+streamlit>=1.30.0
+
+# Data Validation
+pydantic>=2.0.0
+
+# Environment & Config
+python-dotenv>=1.0.0
+
+# HTTP & Web Scraping
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+
+# Resilience & Retry Logic
+tenacity>=8.2.0
+
+# Document Processing
+pypdf>=3.17.0
+
+# Production/Deployment Dependencies
+watchdog>=3.0.0  # File watching for Streamlit
+
+# Optional: For enhanced author search
+# scholarly>=1.7.0  # Google Scholar (uncomment if needed)

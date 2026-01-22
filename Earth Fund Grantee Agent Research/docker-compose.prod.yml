@@ -1,0 +1,72 @@
+# Grant Proposal Analyzer - Production Override Configuration
+# Use with: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+#
+# This configuration adds:
+# - Nginx reverse proxy with SSL termination
+# - Load balancing for multiple app instances
+# - Enhanced security headers
+# - Production-grade logging
+
+version: '3.8'
+
+services:
+  app:
+    # Scale for 5-10 concurrent users
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 5
+        window: 120s
+
+    # Don't expose ports directly in production (use nginx)
+    expose:
+      - "8501"
+    ports: []
+
+    environment:
+      - STREAMLIT_SERVER_ENABLE_CORS=false
+      - STREAMLIT_SERVER_ENABLE_XSRF_PROTECTION=true
+      - STREAMLIT_SERVER_COOKIE_SECRET=${COOKIE_SECRET:-your-secure-random-secret}
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+        labels: "service,environment"
+
+  nginx:
+    image: nginx:alpine
+    container_name: grant-analyzer-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - app
+    networks:
+      - grant-analyzer-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+networks:
+  grant-analyzer-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
