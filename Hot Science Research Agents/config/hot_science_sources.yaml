@@ -1,0 +1,576 @@
+intent:
+  description: >-
+    Peer-reviewed research, attribution studies, or official institutional data
+    releases with direct or indirect implications for climate change drivers,
+    impacts, feedbacks, or responses — including extreme heat, drought, extreme
+    weather, sea level rise, cryosphere change, ocean change, ecosystem and
+    biodiversity response, fire, agriculture, food systems, climate-driven human
+    health, climate-driven migration, and connections between Earth-system
+    components.
+  similarity_threshold: 0.55
+  raw_candidate_monthly_target:
+    min: 200
+    max: 500
+
+seed_terms:
+  - climate
+  - warming
+  - ice
+  - drought
+  - sea level
+  - heat wave
+  - wildfire
+  - monsoon
+  - ENSO
+  - ocean
+  - glacier
+  - permafrost
+  - biodiversity
+  - ecosystem
+  - attribution
+  - peatland
+  - cryosphere
+
+search_queries:
+  - climate change
+  - global warming
+  - climate impacts
+  - extreme heat climate
+  - drought climate
+  - wildfire climate
+  - sea level rise
+  - ocean warming
+  - cryosphere climate
+  - ecosystem climate change
+  - climate health
+  - climate attribution
+  - carbon cycle feedback
+
+domains:
+  - id: extreme_heat
+    label: Extreme heat
+    terms:
+      - heat
+      - heat wave
+      - temperature
+      - urban heat island
+      - humid heat
+  - id: flooding
+    label: Extreme flooding
+    terms:
+      - flood
+      - flooding
+      - compound flooding
+      - pluvial
+      - coastal flood
+  - id: drought
+    label: Drought
+    terms:
+      - drought
+      - aridity
+      - soil moisture
+      - water scarcity
+  - id: extreme_weather
+    label: Extreme weather
+    terms:
+      - extreme weather
+      - storm
+      - cyclone
+      - hurricane
+      - atmospheric river
+  - id: sea_level
+    label: Sea level rise
+    terms:
+      - sea level
+      - sea-level
+      - relative sea-level
+      - coastal risk
+      - inundation
+  - id: cryosphere
+    label: Cryosphere change
+    terms:
+      - cryosphere
+      - ice sheet
+      - ice shelf
+      - ice shelves
+      - ice loss
+      - grounding-line
+      - glacier
+      - sea ice
+      - permafrost
+  - id: ocean_change
+    label: Ocean change
+    terms:
+      - ocean warming
+      - ocean heat
+      - warm water
+      - warming waters
+      - circumpolar deep water
+      - sea surface temperature
+      - marine heatwave
+      - ocean acidification
+      - ocean circulation
+      - thermal regime
+  - id: ecosystems
+    label: Ecosystem and biodiversity response
+    terms:
+      - ecosystem
+      - biodiversity
+      - species
+      - habitat
+      - forest
+  - id: fire
+    label: Fire
+    terms:
+      - wildfire
+      - fire weather
+      - burned area
+      - smoke
+  - id: food_systems
+    label: Agriculture and food systems
+    terms:
+      - crop
+      - agriculture
+      - food
+      - fisheries
+      - livestock
+  - id: human_health
+    label: Climate-driven health
+    terms:
+      - health
+      - mortality
+      - disease vector
+      - vector-borne
+      - malaria
+      - dengue
+  - id: migration
+    label: Climate-driven migration
+    terms:
+      - migration
+      - displacement
+      - relocation
+      - mobility
+  - id: earth_system
+    label: Earth-system connections
+    terms:
+      - earth system
+      - feedback
+      - carbon cycle
+      - teleconnection
+      - monsoon
+      - ENSO
+
+rubric:
+  version: hot_science_v2_candidate
+  composite_method: weighted_sum
+  dimensions:
+    - id: novelty
+      label: Novelty
+      weight: 1.3
+      selection_signal: true
+      bonus_only: false
+      description: New finding, first observation, or substantial advance over prior work.
+    - id: impact_magnitude
+      label: Impact magnitude
+      weight: 1.3
+      selection_signal: true
+      bonus_only: false
+      description: Scale, consequence, geographic scope, or system-level importance.
+    - id: earth_system_signal
+      label: Earth-system signal
+      weight: 1.2
+      selection_signal: true
+      bonus_only: false
+      description: Climate driver, impact, feedback, risk, response, or connected Earth-system process.
+    - id: cross_disciplinary
+      label: Cross-disciplinary relevance
+      weight: 0.5
+      selection_signal: true
+      bonus_only: true
+      description: Additive signal only; absence must not exclude a candidate.
+    - id: cascading_impact
+      label: Cascading-impact potential
+      weight: 0.5
+      selection_signal: true
+      bonus_only: true
+      description: Additive signal only; absence must not exclude a candidate.
+    - id: audience_relevance
+      label: Audience relevance
+      weight: 0.0
+      selection_signal: false
+      bonus_only: true
+      description: Reserved for future summary drafting, not selection.
+
+watchlist:
+  non_target_month_enabled: false
+  preprint_bucket_enabled: true
+
+primary_work_type_priority:
+  - peer_reviewed_journal_article
+  - attribution_report
+  - institutional_data_release
+  - preprint
+  - research_artifact
+
+sources:
+  - id: openalex
+    name: OpenAlex Works
+    kind: scholarly_api
+    source_type: peer_reviewed_journal
+    enabled: true
+
+  - id: crossref
+    name: Crossref Works
+    kind: scholarly_api
+    source_type: peer_reviewed_journal
+    enabled: true
+
+  - id: semantic_scholar
+    name: Semantic Scholar Academic Graph
+    kind: scholarly_api
+    source_type: peer_reviewed_journal
+    enabled: true
+    notes: Enabled without SEMANTIC_SCHOLAR_API_KEY for pilot coverage; unauthenticated calls are rate-limited and may produce nonfatal source errors until a key is configured.
+
+  - id: nature
+    name: Nature
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://www.nature.com/nature.rss
+    issns:
+      - 0028-0836
+      - 1476-4687
+    enabled: true
+
+  - id: nature_communications
+    name: Nature Communications
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://www.nature.com/ncomms.rss
+    issns:
+      - 2041-1723
+    enabled: true
+
+  - id: nature_climate_change
+    name: Nature Climate Change
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://www.nature.com/nclimate.rss
+    issns:
+      - 1758-678X
+      - 1758-6798
+    enabled: true
+
+  - id: nature_geoscience
+    name: Nature Geoscience
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://www.nature.com/ngeo.rss
+    issns:
+      - 1752-0894
+      - 1752-0908
+    enabled: true
+
+  - id: science
+    name: Science
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=science
+    issns:
+      - 0036-8075
+      - 1095-9203
+    enabled: true
+
+  - id: science_advances
+    name: Science Advances
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=sciadv
+    issns:
+      - 2375-2548
+    enabled: true
+
+  - id: pnas
+    name: PNAS
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://www.pnas.org/rss/current.xml
+    issns:
+      - 0027-8424
+      - 1091-6490
+    enabled: true
+
+  - id: agu_geophysical_research_letters
+    name: Geophysical Research Letters
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://agupubs.onlinelibrary.wiley.com/action/showFeed?jc=19448007&type=etoc&feed=rss
+    issns:
+      - 0094-8276
+      - 1944-8007
+    enabled: true
+
+  - id: agu_jgr_atmospheres
+    name: "Journal of Geophysical Research: Atmospheres"
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://agupubs.onlinelibrary.wiley.com/action/showFeed?jc=21698996&type=etoc&feed=rss
+    issns:
+      - 2169-897X
+      - 2169-8996
+    enabled: true
+
+  - id: agu_jgr_oceans
+    name: "Journal of Geophysical Research: Oceans"
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://agupubs.onlinelibrary.wiley.com/action/showFeed?jc=21699291&type=etoc&feed=rss
+    issns:
+      - 2169-9275
+      - 2169-9291
+    enabled: true
+
+  - id: agu_jgr_earth_surface
+    name: "Journal of Geophysical Research: Earth Surface"
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://agupubs.onlinelibrary.wiley.com/action/showFeed?jc=21699011&type=etoc&feed=rss
+    issns:
+      - 2169-9003
+      - 2169-9011
+    enabled: true
+
+  - id: agu_earths_future
+    name: Earth's Future
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://agupubs.onlinelibrary.wiley.com/action/showFeed?jc=23284277&type=etoc&feed=rss
+    issns:
+      - 2328-4277
+    enabled: true
+
+  - id: agu_geohealth
+    name: GeoHealth
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://agupubs.onlinelibrary.wiley.com/action/showFeed?jc=24711403&type=etoc&feed=rss
+    issns:
+      - 2471-1403
+    enabled: true
+
+  - id: agu_global_biogeochemical_cycles
+    name: Global Biogeochemical Cycles
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://agupubs.onlinelibrary.wiley.com/action/showFeed?jc=19449224&type=etoc&feed=rss
+    issns:
+      - 0886-6236
+      - 1944-9224
+    enabled: true
+
+  - id: agu_water_resources_research
+    name: Water Resources Research
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://agupubs.onlinelibrary.wiley.com/action/showFeed?jc=19447973&type=etoc&feed=rss
+    issns:
+      - 0043-1397
+      - 1944-7973
+    enabled: true
+
+  - id: agu_reviews_of_geophysics
+    name: Reviews of Geophysics
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://agupubs.onlinelibrary.wiley.com/action/showFeed?jc=19449208&type=etoc&feed=rss
+    issns:
+      - 8755-1209
+      - 1944-9208
+    enabled: true
+
+  - id: egu_earth_system_dynamics
+    name: Earth System Dynamics
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://esd.copernicus.org/xml/rss2_0.xml
+    issns:
+      - 2190-4979
+      - 2190-4987
+    enabled: true
+
+  - id: egu_earth_system_science_data
+    name: Earth System Science Data
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://essd.copernicus.org/xml/rss2_0.xml
+    issns:
+      - 1866-3508
+      - 1866-3516
+    enabled: true
+
+  - id: egu_climate_of_the_past
+    name: Climate of the Past
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://cp.copernicus.org/xml/rss2_0.xml
+    issns:
+      - 1814-9324
+      - 1814-9332
+    enabled: true
+
+  - id: egu_the_cryosphere
+    name: The Cryosphere
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://tc.copernicus.org/xml/rss2_0.xml
+    issns:
+      - 1994-0416
+      - 1994-0424
+    enabled: true
+
+  - id: egu_atmospheric_chemistry_and_physics
+    name: Atmospheric Chemistry and Physics
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://acp.copernicus.org/xml/rss2_0.xml
+    issns:
+      - 1680-7316
+      - 1680-7324
+    enabled: true
+
+  - id: egu_biogeosciences
+    name: Biogeosciences
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://bg.copernicus.org/xml/rss2_0.xml
+    issns:
+      - 1726-4170
+      - 1726-4189
+    enabled: true
+
+  - id: egu_hydrology_and_earth_system_sciences
+    name: Hydrology and Earth System Sciences
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://hess.copernicus.org/xml/rss2_0.xml
+    issns:
+      - 1027-5606
+      - 1607-7938
+    enabled: true
+
+  - id: egu_natural_hazards_and_earth_system_sciences
+    name: Natural Hazards and Earth System Sciences
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://nhess.copernicus.org/xml/rss2_0.xml
+    issns:
+      - 1561-8633
+      - 1684-9981
+    enabled: true
+
+  - id: egu_ocean_science
+    name: Ocean Science
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://os.copernicus.org/xml/rss2_0.xml
+    issns:
+      - 1812-0784
+      - 1812-0792
+    enabled: true
+
+  - id: egu_geoscientific_model_development
+    name: Geoscientific Model Development
+    kind: rss
+    source_type: peer_reviewed_journal
+    url: https://gmd.copernicus.org/xml/rss2_0.xml
+    issns:
+      - 1991-959X
+      - 1991-9603
+    enabled: true
+
+  - id: science_daily_climate
+    name: ScienceDaily Climate News
+    kind: rss
+    source_type: popular_press
+    url: https://www.sciencedaily.com/rss/earth_climate/climate.xml
+    enabled: true
+
+  - id: science_daily_environment
+    name: ScienceDaily Environment News
+    kind: rss
+    source_type: popular_press
+    url: https://www.sciencedaily.com/rss/earth_climate/environmental_science.xml
+    enabled: true
+
+  - id: wmo
+    name: World Meteorological Organization
+    kind: institutional_feed
+    source_type: institutional_data_release
+    url: https://wmo.int/news
+    enabled: false
+    notes: Current WMO site does not expose a stable RSS endpoint; add a dedicated scraper/API source before re-enabling.
+
+  - id: copernicus_c3s
+    name: Copernicus Climate Change Service
+    kind: institutional_feed
+    source_type: institutional_data_release
+    url: https://climate.copernicus.eu/rss.xml
+    enabled: true
+
+  - id: noaa_climate
+    name: NOAA/NCEI News
+    kind: institutional_feed
+    source_type: institutional_data_release
+    url: https://www.ncei.noaa.gov/news.xml
+    enabled: true
+    notes: Climate.gov was archived on 2025-06-25; this uses NCEI's live news RSS instead of NOAA's broad agency RSS.
+
+  - id: nsidc_news
+    name: NSIDC News
+    kind: institutional_feed
+    source_type: institutional_data_release
+    url: https://nsidc.org/news/feed
+    enabled: true
+
+  - id: nsidc_sea_ice_today
+    name: NSIDC Arctic Sea Ice News
+    kind: institutional_feed
+    source_type: institutional_data_release
+    url: https://nsidc.org/arcticseaicenews/feed
+    enabled: true
+    notes: Best-effort cryosphere lead source; preserve source-error handling because NSIDC feed availability can change.
+
+  - id: world_weather_attribution
+    name: World Weather Attribution
+    kind: rss
+    source_type: attribution_report
+    url: https://www.worldweatherattribution.org/feed/
+    enabled: true
+
+  - id: eartharxiv
+    name: EarthArXiv
+    kind: oai_pmh
+    source_type: preprint
+    url: https://eartharxiv.org/api/oai/
+    enabled: true
+
+  - id: ess_open_archive
+    name: ESS Open Archive
+    kind: preprint_feed
+    source_type: preprint
+    enabled: false
+    notes: Configure feed/API endpoint after source access is confirmed.
+
+  - id: nyt_climate
+    name: New York Times Climate
+    kind: press_api
+    source_type: popular_press
+    enabled: false
+    notes: Requires NYT API or licensed access.
+
+  - id: guardian_environment
+    name: The Guardian Environment
+    kind: press_api
+    source_type: popular_press
+    enabled: false
+    notes: Requires Guardian Open Platform key or RSS fallback.

@@ -1,0 +1,390 @@
+{
+  "fixture_version": "hot_science_calibration_v1",
+  "target_month": "2026-04",
+  "run_focus": "Cryosphere and sea-level rise research, especially new findings on Arctic or Antarctic ice loss, glaciers, permafrost, ocean warming, and implications for coastal risk.",
+  "source_documents": [
+    "updated docs/DeepGreen hot science Agent Prototype Results 2026-04_COMMENTS.docx",
+    "updated docs/Hot Science Criteria and Feedback Rule Optimization Map_COMMENTS.docx",
+    "updated docs/Responses_Prototype_Results_April_2026.docx",
+    "updated docs/Responses_Criteria_and_Optimization_Map.docx"
+  ],
+  "cases": [
+    {
+      "id": "keep_hidden_ocean_heat_antarctica",
+      "reviewer_signal": "Reviewer-confirmed positive example: relevant to Antarctic ice shelves and in the correct target window.",
+      "generalized_rule": "A candidate should pass when abstract evidence supports a run-focus relevance claim and the primary publication date is in the target month.",
+      "expected_bucket": "candidate",
+      "expected_reason_code": "evidence_fit_in_target_month",
+      "expected_domain_tags": ["ocean_change", "cryosphere"],
+      "candidate": {
+        "title": "Hidden ocean heat is creeping toward Antarctica's fragile ice shelves",
+        "doi": "10.9999/hot-science.2026.antarctic-ocean-heat",
+        "authors": ["Ada Ocean", "Sam Ice"],
+        "publication": {
+          "venue": "Nature Climate Change",
+          "venue_type": "peer_reviewed_journal",
+          "source_record_type": "journal-article",
+          "online_publication_date": "2026-04-30",
+          "date_source_field": "published-online",
+          "url": "https://doi.org/10.9999/hot-science.2026.antarctic-ocean-heat",
+          "primary_source_url": "https://doi.org/10.9999/hot-science.2026.antarctic-ocean-heat",
+          "primary_work_type": "peer_reviewed_journal_article",
+          "open_access": true
+        },
+        "abstract": "Warm circumpolar deep water has expanded and moved closer to Antarctica over the past two decades, increasing exposure of fragile Antarctic ice shelves to ocean heat and raising implications for future ice loss and coastal sea-level risk.",
+        "abstract_source": "fixture",
+        "discovered_via": [
+          {
+            "source": "ScienceDaily Climate News",
+            "url": "https://www.sciencedaily.com/releases/2026/04/260429102023.htm",
+            "date_seen": "2026-04-30",
+            "source_type": "popular_press"
+          }
+        ],
+        "target_month": "2026-04"
+      }
+    },
+    {
+      "id": "exclude_cascadia_subduction_geology",
+      "reviewer_signal": "Reviewer identified this as a Cascadia subduction-zone geology paper rather than a climate-change impact paper.",
+      "generalized_rule": "Geology or tectonic adjacency is insufficient without abstract evidence of a contemporary climate driver, impact, feedback, risk, response, or run-focus finding.",
+      "expected_bucket": "excluded",
+      "expected_reason_code": "no_evidence_of_hot_science_fit",
+      "candidate": {
+        "title": "Earth is splitting open beneath the Pacific Northwest, scientists say",
+        "publication": {
+          "venue": "ScienceDaily Climate News",
+          "venue_type": "popular_press",
+          "source_record_type": "rss_item",
+          "online_publication_date": "2026-04-29",
+          "date_source_field": "pubDate",
+          "url": "https://www.sciencedaily.com/releases/2026/04/260429232851.htm"
+        },
+        "abstract": "Seismic imaging shows the Juan de Fuca plate fragmenting as it sinks beneath North America, improving understanding of subduction-zone structure and earthquake behavior.",
+        "abstract_source": "fixture",
+        "discovered_via": [
+          {
+            "source": "ScienceDaily Climate News",
+            "url": "https://www.sciencedaily.com/releases/2026/04/260429232851.htm",
+            "date_seen": "2026-04-29",
+            "source_type": "popular_press"
+          }
+        ],
+        "target_month": "2026-04"
+      }
+    },
+    {
+      "id": "exclude_twelve_apostles_formation_history",
+      "reviewer_signal": "Reviewer identified this as formation history, not current climate risk or the cryosphere/sea-level focus.",
+      "generalized_rule": "Ancient formation or geological history papers require explicit contemporary or future climate implications to pass.",
+      "expected_bucket": "excluded",
+      "expected_reason_code": "historical_or_formation_without_current_climate_implication",
+      "candidate": {
+        "title": "Scientists finally explain how the Twelve Apostles rose from the ocean",
+        "publication": {
+          "venue": "ScienceDaily Climate News",
+          "venue_type": "popular_press",
+          "source_record_type": "rss_item",
+          "online_publication_date": "2026-04-30",
+          "date_source_field": "pubDate",
+          "url": "https://www.sciencedaily.com/releases/2026/04/260429102028.htm"
+        },
+        "abstract": "Limestone stacks along Australia's coast preserve clues about tectonic uplift, ancient climates, sea levels, and life from millions of years ago.",
+        "abstract_source": "fixture",
+        "discovered_via": [
+          {
+            "source": "ScienceDaily Climate News",
+            "url": "https://www.sciencedaily.com/releases/2026/04/260429102028.htm",
+            "date_seen": "2026-04-30",
+            "source_type": "popular_press"
+          }
+        ],
+        "target_month": "2026-04"
+      }
+    },
+    {
+      "id": "exclude_east_africa_rifting_tectonics",
+      "reviewer_signal": "Reviewer identified this as tectonic-shift research outside the run focus.",
+      "generalized_rule": "Tectonic process papers should be excluded unless they directly support a climate-relevant finding.",
+      "expected_bucket": "excluded",
+      "expected_reason_code": "no_evidence_of_hot_science_fit",
+      "candidate": {
+        "title": "Scientists just discovered Africa is closer to breaking apart than we thought",
+        "publication": {
+          "venue": "ScienceDaily Climate News",
+          "venue_type": "popular_press",
+          "source_record_type": "rss_item",
+          "online_publication_date": "2026-04-25",
+          "date_source_field": "pubDate",
+          "url": "https://www.sciencedaily.com/releases/2026/04/260424233204.htm"
+        },
+        "abstract": "Researchers find crustal necking beneath East Africa's Turkana Rift, suggesting an advanced stage of continental breakup and future ocean formation over geologic timescales.",
+        "abstract_source": "fixture",
+        "discovered_via": [
+          {
+            "source": "ScienceDaily Climate News",
+            "url": "https://www.sciencedaily.com/releases/2026/04/260424233204.htm",
+            "date_seen": "2026-04-25",
+            "source_type": "popular_press"
+          }
+        ],
+        "target_month": "2026-04"
+      }
+    },
+    {
+      "id": "exclude_maya_collapse_historical_wrong_month",
+      "reviewer_signal": "Reviewer flagged this as both wrong-month and historical, without contemporary climate relevance.",
+      "generalized_rule": "Historical climate language is insufficient unless the abstract explicitly connects to current or future climate systems, impacts, risks, or responses.",
+      "expected_bucket": "excluded",
+      "expected_reason_code": "historical_without_current_climate_implication",
+      "candidate": {
+        "title": "Maya collapse mystery deepens as scientists find no drought at key site",
+        "doi": "10.9999/hot-science.2025.maya-collapse",
+        "publication": {
+          "venue": "Science Advances",
+          "venue_type": "peer_reviewed_journal",
+          "source_record_type": "journal-article",
+          "online_publication_date": "2025-09-12",
+          "date_source_field": "published-online",
+          "url": "https://doi.org/10.9999/hot-science.2025.maya-collapse",
+          "primary_source_url": "https://doi.org/10.9999/hot-science.2025.maya-collapse",
+          "primary_work_type": "peer_reviewed_journal_article"
+        },
+        "abstract": "Lake-sediment evidence suggests one Maya city experienced stable historical climate conditions while regional conflict and social networks changed.",
+        "abstract_source": "fixture",
+        "target_month": "2026-04"
+      }
+    },
+    {
+      "id": "exclude_neanderthal_historical_climate_term",
+      "reviewer_signal": "Reviewer noted that climate change means something different in this historical extinction context.",
+      "generalized_rule": "Historical uses of climate-change language must not count as Hot Science without current or future climate implications.",
+      "expected_bucket": "excluded",
+      "expected_reason_code": "historical_without_current_climate_implication",
+      "candidate": {
+        "title": "Scientists think they finally know why Neanderthals vanished",
+        "publication": {
+          "venue": "ScienceDaily Climate News",
+          "venue_type": "popular_press",
+          "source_record_type": "rss_item",
+          "online_publication_date": "2026-04-28",
+          "date_source_field": "pubDate",
+          "url": "https://www.sciencedaily.com/releases/2026/04/260427050609.htm"
+        },
+        "abstract": "A study examines social connectivity, competition, and environmental shocks in Neanderthal extinction tens of thousands of years ago.",
+        "abstract_source": "fixture",
+        "target_month": "2026-04"
+      }
+    },
+    {
+      "id": "exclude_ancient_antarctic_ice_paleoclimate_wrong_month",
+      "reviewer_signal": "Reviewer said paleoclimate papers should be excluded unless there are contemporary implications, and this was wrong-month.",
+      "generalized_rule": "Paleoclimate-only papers need explicit contemporary or future implications and a target-month primary date.",
+      "expected_bucket": "excluded",
+      "expected_reason_code": "paleoclimate_without_current_implication",
+      "candidate": {
+        "title": "Scientists just uncovered a 3 million-year climate mystery in Antarctic ice",
+        "doi": "10.9999/hot-science.2026.ancient-antarctic-ice",
+        "publication": {
+          "venue": "Nature",
+          "venue_type": "peer_reviewed_journal",
+          "source_record_type": "journal-article",
+          "online_publication_date": "2026-03-24",
+          "date_source_field": "published-online",
+          "url": "https://doi.org/10.9999/hot-science.2026.ancient-antarctic-ice",
+          "primary_source_url": "https://doi.org/10.9999/hot-science.2026.ancient-antarctic-ice",
+          "primary_work_type": "peer_reviewed_journal_article"
+        },
+        "abstract": "Ancient Antarctic ice cores reveal greenhouse gases and ocean cooling patterns over the past 3 million years.",
+        "abstract_source": "fixture",
+        "target_month": "2026-04"
+      }
+    },
+    {
+      "id": "watchlist_alaska_salmon_predator_wrong_month",
+      "reviewer_signal": "Reviewer said the paper seemed relevant, but it was from February rather than April.",
+      "generalized_rule": "Relevant but wrong-month papers should not enter the monthly candidate set; if enabled, retain them in a non-target-month watchlist.",
+      "expected_bucket": "watchlist",
+      "expected_reason_code": "relevant_outside_target_month",
+      "candidate": {
+        "title": "Warming waters are supercharging an invasive salmon predator in Alaska",
+        "doi": "10.9999/hot-science.2026.alaska-salmon-predator",
+        "publication": {
+          "venue": "Global Change Biology",
+          "venue_type": "peer_reviewed_journal",
+          "source_record_type": "journal-article",
+          "online_publication_date": "2026-02-20",
+          "date_source_field": "published-online",
+          "url": "https://doi.org/10.9999/hot-science.2026.alaska-salmon-predator",
+          "primary_source_url": "https://doi.org/10.9999/hot-science.2026.alaska-salmon-predator",
+          "primary_work_type": "peer_reviewed_journal_article"
+        },
+        "abstract": "Future warming projections and changing thermal regimes increase metabolic demand and predation by invasive northern pike, creating risks for Alaska salmon populations.",
+        "abstract_source": "fixture",
+        "target_month": "2026-04"
+      }
+    },
+    {
+      "id": "artifact_sea_land_breeze_zenodo_deposit",
+      "reviewer_signal": "Diagnostic found the agent picked a Zenodo code deposit instead of the Nature Climate Change paper.",
+      "generalized_rule": "When multiple records describe the same logical work, prefer the peer-reviewed article over repositories, code, data, supplements, and deposits.",
+      "expected_bucket": "candidate",
+      "expected_reason_code": "canonical_article_preferred_over_artifact",
+      "candidate": {
+        "title": "Ocean Warming Weaken Sea Land Breeze in Coastal Megacities (Code for simulation)",
+        "doi": "10.5281/zenodo.18932849",
+        "publication": {
+          "venue": "Zenodo",
+          "venue_type": "peer_reviewed_journal",
+          "source_record_type": "dataset",
+          "online_publication_date": "2026-03-10",
+          "date_source_field": "publication_date",
+          "url": "https://doi.org/10.5281/zenodo.18932849",
+          "primary_source_url": "https://doi.org/10.5281/zenodo.18932849",
+          "primary_work_type": "research_artifact"
+        },
+        "abstract": "Code and simulation files associated with a peer-reviewed article on ocean warming and sea-land breeze changes in coastal megacities.",
+        "abstract_source": "fixture",
+        "target_month": "2026-04"
+      },
+      "canonical_primary": {
+        "title": "Ocean warming weakens sea-land breeze in coastal megacities",
+        "doi": "10.1038/s41558-026-02618-9",
+        "authors": ["Ada Coast", "Sam Climate"],
+        "publication": {
+          "venue": "Nature Climate Change",
+          "venue_type": "peer_reviewed_journal",
+          "source_record_type": "journal-article",
+          "online_publication_date": "2026-04-15",
+          "date_source_field": "published-online",
+          "url": "https://www.nature.com/articles/s41558-026-02618-9",
+          "primary_source_url": "https://www.nature.com/articles/s41558-026-02618-9",
+          "primary_work_type": "peer_reviewed_journal_article"
+        },
+        "abstract": "Rising sea surface temperatures alter coastal thermal gradients and weaken sea-land breeze circulation, increasing heat exposure in coastal megacities under ocean warming.",
+        "abstract_source": "fixture",
+        "target_month": "2026-04"
+      }
+    },
+    {
+      "id": "exclude_airborne_microplastics_ambiguous_emissions",
+      "reviewer_signal": "Reviewer suspected the agent confused particle emissions with greenhouse-gas emissions.",
+      "generalized_rule": "Ambiguous words such as emissions, particles, or atmosphere only count when the abstract shows a climate mechanism or climate impact.",
+      "expected_bucket": "excluded",
+      "expected_reason_code": "ambiguous_keyword_without_climate_mechanism",
+      "candidate": {
+        "title": "Scientists just found where airborne microplastics really come from",
+        "doi": "10.9999/hot-science.2026.airborne-microplastics",
+        "publication": {
+          "venue": "Environmental Science and Technology",
+          "venue_type": "peer_reviewed_journal",
+          "source_record_type": "journal-article",
+          "online_publication_date": "2026-03-20",
+          "date_source_field": "published-online",
+          "url": "https://doi.org/10.9999/hot-science.2026.airborne-microplastics",
+          "primary_source_url": "https://doi.org/10.9999/hot-science.2026.airborne-microplastics",
+          "primary_work_type": "peer_reviewed_journal_article"
+        },
+        "abstract": "Land sources emit more airborne microplastic particles to the atmosphere than ocean sources, changing estimates of plastic pollutant transport.",
+        "abstract_source": "fixture",
+        "target_month": "2026-04"
+      }
+    },
+    {
+      "id": "exclude_arctic_sea_ice_thickness_methods_only",
+      "reviewer_signal": "Reviewer identified this as methods work rather than a substantive Hot Science finding.",
+      "generalized_rule": "A methods paper passes only if the abstract reports a substantive climate finding, not just a better measurement method or dataset.",
+      "expected_bucket": "excluded",
+      "expected_reason_code": "methods_only_without_substantive_climate_finding",
+      "candidate": {
+        "title": "Estimating Arctic sea ice thickness from satellite-based ice history",
+        "doi": "10.9999/hot-science.2026.arctic-sea-ice-method",
+        "publication": {
+          "venue": "The Cryosphere",
+          "venue_type": "peer_reviewed_journal",
+          "source_record_type": "journal-article",
+          "online_publication_date": "2026-04-12",
+          "date_source_field": "published-online",
+          "url": "https://doi.org/10.9999/hot-science.2026.arctic-sea-ice-method",
+          "primary_source_url": "https://doi.org/10.9999/hot-science.2026.arctic-sea-ice-method",
+          "primary_work_type": "peer_reviewed_journal_article"
+        },
+        "abstract": "We present a new method and dataset for estimating Arctic sea ice thickness from satellite-based ice history, benchmarked against existing retrieval products.",
+        "abstract_source": "fixture",
+        "target_month": "2026-04"
+      }
+    },
+    {
+      "id": "exclude_turkish_textbooks_social_science",
+      "reviewer_signal": "Reviewer said this social-science/literacy paper would not be used for Hot Science.",
+      "generalized_rule": "For UC-I-1 Hot Science, education, literacy, communication, or pedagogy papers do not qualify without natural- or Earth-system science findings.",
+      "expected_bucket": "excluded",
+      "expected_reason_code": "social_science_without_natural_science_finding",
+      "candidate": {
+        "title": "Environmental Literacy and Critical Climate Citizenship in Turkish Language Textbooks",
+        "doi": "10.9999/hot-science.2026.textbook-climate-literacy",
+        "publication": {
+          "venue": "Environmental Education Research",
+          "venue_type": "peer_reviewed_journal",
+          "source_record_type": "journal-article",
+          "online_publication_date": "2026-04-18",
+          "date_source_field": "published-online",
+          "url": "https://doi.org/10.9999/hot-science.2026.textbook-climate-literacy",
+          "primary_source_url": "https://doi.org/10.9999/hot-science.2026.textbook-climate-literacy",
+          "primary_work_type": "peer_reviewed_journal_article"
+        },
+        "abstract": "A thematic analysis examines how Turkish language textbooks represent climate change, environmental literacy, and critical citizenship.",
+        "abstract_source": "fixture",
+        "target_month": "2026-04"
+      }
+    },
+    {
+      "id": "manual_review_title_only_plausible_climate_item",
+      "reviewer_signal": "Reviewer said title-only evidence is often not enough and the agent should focus on abstract or metadata first.",
+      "generalized_rule": "A plausible title with no abstract after recovery attempts should route to manual review rather than automatic exclusion or scoring.",
+      "expected_bucket": "manual_review",
+      "expected_reason_code": "title_only_abstract_missing",
+      "candidate": {
+        "title": "Climate change impacts insect survival in warming mountain ecosystems",
+        "doi": "10.9999/hot-science.2026.title-only-insects",
+        "publication": {
+          "venue": "Ecology Letters",
+          "venue_type": "peer_reviewed_journal",
+          "source_record_type": "journal-article",
+          "online_publication_date": "2026-04-08",
+          "date_source_field": "published-online",
+          "url": "https://doi.org/10.9999/hot-science.2026.title-only-insects",
+          "primary_source_url": "https://doi.org/10.9999/hot-science.2026.title-only-insects",
+          "primary_work_type": "peer_reviewed_journal_article"
+        },
+        "abstract": null,
+        "abstract_source": null,
+        "target_month": "2026-04"
+      }
+    },
+    {
+      "id": "preprint_separate_bucket_eartharxiv",
+      "reviewer_signal": "Reviewer asked whether preprints would be presented as a separate list.",
+      "generalized_rule": "Preprints should be clearly separated from peer-reviewed primary candidates.",
+      "expected_bucket": "preprint",
+      "expected_reason_code": "preprint_separate_bucket",
+      "candidate": {
+        "title": "Rapid Antarctic grounding-line retreat under ocean warming",
+        "doi": "10.31223/x5abcd",
+        "publication": {
+          "venue": "EarthArXiv",
+          "venue_type": "preprint",
+          "source_record_type": "preprint",
+          "online_publication_date": "2026-04-11",
+          "date_source_field": "posted",
+          "url": "https://doi.org/10.31223/x5abcd",
+          "primary_source_url": "https://doi.org/10.31223/x5abcd",
+          "primary_work_type": "preprint"
+        },
+        "abstract": "A preprint reports rapid Antarctic grounding-line retreat associated with ocean warming and future sea-level risk.",
+        "abstract_source": "fixture",
+        "target_month": "2026-04"
+      }
+    }
+  ]
+}

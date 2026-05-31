@@ -1,0 +1,35 @@
+app = "deepgreen-hot-science"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  APP_NAME = "DeepGreen"
+  LOG_LEVEL = "INFO"
+  HOT_SCIENCE_DATA_DIR = "/data/hot_science"
+  HOT_SCIENCE_REPORT_RETENTION_DAYS = "30"
+  DEEPGREEN_UI_ADMIN_USERS = "user1"
+  DEEPGREEN_UI_SESSION_TTL_SECONDS = "43200"
+  HOT_SCIENCE_ENABLE_BEDROCK_EMBEDDINGS = "0"
+  HOT_SCIENCE_ENABLE_UNPAYWALL = "0"
+  HOT_SCIENCE_DOWNLOAD_PDFS = "0"
+  PORT = "8080"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+[[mounts]]
+  source = "hot_science_data"
+  destination = "/data"
+  processes = ["app"]
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory = "1gb"

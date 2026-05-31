@@ -1,0 +1,270 @@
+# Overview
+
+- Build a high-quality, clean FastAPI + React/Vite web UI for the UC-I-1 Hot Science agent.
+- Deploy the pilot UI on Fly.io for a small internal Hot Science team.
+- Keep the first workflow intentionally focused: enter criteria, run agents, receive one download link.
+- Use synchronous execution in Phase 1, with clear stage labels and source-by-source progress summaries.
+- Store pilot run state and generated artifacts on a Fly volume with SQLite and files under a configurable data directory.
+- Treat Fly volume storage as pilot-grade persistence, not high-availability production storage.
+- Use one Fly Machine with one mounted volume for the pilot.
+- Treat Fly.io as a pilot path before moving the UI into the AWS DeepGreen infrastructure.
+- Preserve the existing Hot Science pipeline in `agents/hot_science/` as the source of truth for discovery, verification, evaluation, and compilation.
+- Keep source lists, thresholds, seed terms, and source enablement in `config/hot_science_sources.yaml`.
+- Keep platform configuration in `.env` and `config/settings.py`; do not hardcode AWS, Fly, model, source, or auth secrets.
+- Keep the current Streamlit app available as the legacy internal console while the new Fly UI is built separately.
+- Make Word `.docx` the first primary output; add PDF after conversion reliability is confirmed.
+- Keep prior run history available in a clean, hidden interface rather than on the main run screen.
+- Include both top candidates and manual-review candidates in the normal user-facing Word download.
+- Keep excluded candidates and internal QA artifacts available through an admin/debug view, not the default team-facing output.
+
+# Reviewer feedback to general rules
+
+- Feedback: The team needs precise papers, not broad noisy lists.
+  - Rule: The UI must pass a long criteria prompt and a short retrieval query separately to the orchestrator.
+  - Rule: The API must reject runs without a target month and meaningful criteria.
+  - Rule: The default document should show strict top candidates plus manual-review candidates, not every raw candidate.
+- Feedback: Readers were confused when data sources were blank.
+  - Rule: Every downloadable document must include a populated data-source inventory from `config/hot_science_sources.yaml`.
+  - Rule: Every run must include source diagnostics, including source id, source type, enabled status, attempted status, and counts when available.
+- Feedback: The team needs to know what was searched.
+  - Rule: The run configuration section must include target month, source scan window, criteria summary, retrieval query, selected sources, max results, standing criteria version, and rubric version.
+- Feedback: The team needs category counts and bucket clarity.
+  - Rule: The document must show total paper records categorized and category counts.
+  - Rule: Any zero-count category must include a short explanation.
+  - Rule: The primary team-facing document should not show raw excluded appendices unless an advanced/internal export is explicitly requested later.
+- Feedback: "Fit: Not recorded" caused confusion.
+  - Rule: Top candidates must have an explicit fit gate result and evidence source.
+  - Rule: Items with missing fit evidence should route to manual review or exclusion, not top candidates.
+  - Rule: The document should use plain labels such as "Fit verified" or "Manual review required" instead of ambiguous "Not recorded" for team-facing output.
+- Feedback: Long prompts should be usable without breaking source APIs.
+  - Rule: The UI must support paste and `.md` / `.txt` upload for long criteria.
+  - Rule: The UI must collect or derive a concise API retrieval query and keep the full criteria for filtering and output context.
+- Feedback: The UI should feel powerful but simple.
+  - Rule: The first screen should expose only target month, criteria input, run button, and final download link.
+  - Rule: Source selection and max results should live in an advanced panel.
+  - Rule: Prior run history should live in a hidden or secondary interface.
+- Feedback: The pilot should be shareable with the Hot Science team but not public.
+  - Rule: Add simple username/password auth for seven pilot users.
+  - Rule: Store the user credential map as Fly secrets or environment variables, never in code or `fly.toml`.
+  - Rule: Support the user's desired `user1` through `user7` credential pattern through secrets, with the option to swap in safer names/passwords later.
+- Feedback: The UI should be a pilot, not the final enterprise deployment.
+  - Rule: Keep deployment simple on Fly.io now.
+  - Rule: Document the path back to AWS/Cognito/AgentCore production architecture after pilot feedback.
+
+# Expected behavior
+
+- A Hot Science team member opens the Fly.io URL and enters one of seven pilot usernames and passwords.
+- The user sees a focused research-run form, not a general landing page.
+- The form defaults to the previous month but allows a specific `YYYY-MM` target month.
+- The user can paste a page-long criteria prompt or upload a `.md` / `.txt` criteria file.
+- Uploaded criteria files are normalized into run criteria text; the original uploaded file is not retained.
+- The user can optionally provide a short API retrieval query.
+- Advanced settings are hidden by default and include selected sources and max results per source.
+- Clicking "Run agents" starts the existing Hot Science orchestrator synchronously.
+- The UI shows stage labels such as scanning, resolving, verifying, evaluating, attaching coverage, checking prior editions, and compiling.
+- The UI shows source-by-source progress or source completion summaries when each source finishes.
+- When the run completes, the page shows one primary download link for the team-facing `.docx`.
+- PDF generation is deferred until a later phase after conversion reliability is proven.
+- The UI does not display a long table of papers by default.
+- A clean hidden run-history interface lets authenticated users find prior runs and prior document links.
+- The Word document includes top candidates, manual-review candidates, run configuration, search methodology, data sources, total counts, category counts, zero-count explanations, and source diagnostics.
+- The backend still stores JSON, Markdown, review CSV, and source CSV artifacts for QA/debugging.
+- Excluded candidates and internal QA artifacts are available only through the hidden admin/debug interface.
+- Team-facing output exposes the Word document link as the primary result.
+- Runs persist across restarts on the Fly volume in the pilot deployment.
+- Reports and generated artifacts expire after a configured retention period.
+- Source errors are captured in the run record and summarized in the document rather than disappearing from the UI.
+- Existing CLI behavior in `scripts/run_hot_science.py` remains usable.
+
+# Architecture and files
+
+- Create `web/backend/`.
+  - `web/backend/main.py`: FastAPI app, health endpoint, static frontend mount, run endpoint, artifact download endpoint.
+  - `web/backend/auth.py`: simple username/password session gate using a secret-backed user map such as `DEEPGREEN_UI_USERS_JSON`.
+  - `web/backend/hot_science_service.py`: typed service wrapper around `HotScienceOrchestrator`.
+  - `web/backend/progress.py`: stage and source progress event types for synchronous UI updates.
+  - `web/backend/artifacts.py`: writes run artifacts under a configurable data directory, returns stable download ids, and prunes expired artifacts.
+  - `web/backend/schemas.py`: Pydantic request/response models for run requests, stage updates, and artifact metadata.
+- Modify `agents/hot_science/orchestrator.py`.
+  - Add an optional progress callback without changing default CLI behavior.
+  - Emit stage-start, stage-complete, source-start, source-complete, and source-error events where available.
+  - Keep pipeline logic and candidate routing unchanged unless tests reveal a bug.
+- Modify `agents/hot_science/source_monitor.py`.
+  - Add optional per-source progress callbacks around `scan_source`.
+  - Preserve source definitions from `config/hot_science_sources.yaml`.
+- Modify `agents/hot_science/compiler.py`.
+  - Add or standardize `write_docx` for the primary team-facing artifact.
+  - Defer `write_pdf` until a later phase after conversion reliability is confirmed.
+  - Ensure the primary document uses top candidates, manual-review candidates, run configuration, sources, counts, zero explanations, and source diagnostics.
+  - Keep Markdown, JSON, review CSV, and source breakdown CSV generation for QA and regression use.
+- Modify `agents/hot_science/storage.py`.
+  - Add fields or tables for run criteria, retrieval query, selected sources, max results, status, source diagnostics, artifact metadata, expiration timestamps, and authenticated username.
+  - Keep SQLite as the pilot adapter.
+  - Keep the interface narrow enough to later swap to Postgres or DynamoDB.
+- Modify `config/settings.py`.
+  - Add optional `HOT_SCIENCE_DATA_DIR`, defaulting locally to `.deepgreen/hot_science`.
+  - Add optional UI auth settings for a secret-backed seven-user credential map.
+  - Add optional public base URL setting for artifact links.
+  - Add optional report retention settings such as `HOT_SCIENCE_REPORT_RETENTION_DAYS`.
+- Keep `config/hot_science_sources.yaml` as the editable source inventory.
+  - No source ids, seed terms, or thresholds should be hardcoded in backend or frontend code.
+- Keep `config/prompts.py` untouched unless a new agent system prompt is truly needed.
+  - User search criteria are run inputs, not system prompts.
+- Create `web/frontend/`.
+  - React/Vite app with a single focused Hot Science run page.
+  - Components for password gate, criteria input/upload, advanced settings, progress summary, and final download state.
+  - Hidden run-history view for prior runs and document links.
+  - Hidden admin/debug view for excluded candidates, JSON, CSV, and diagnostic artifacts.
+  - Use a restrained internal-tool layout with clear form controls and no marketing-style landing page.
+- Create root deployment files.
+  - `Dockerfile`: builds frontend, installs Python backend dependencies, serves FastAPI on `0.0.0.0:8080`.
+  - `fly.toml`: configures `[http_service] internal_port = 8080`, HTTPS, one pilot machine, and `/data` volume mount.
+  - `.dockerignore`: excludes `.env`, local outputs, caches, virtualenvs, and generated artifacts.
+- Modify `requirements.txt`.
+  - Add `fastapi`, `uvicorn`, `python-multipart`, and any docx/PDF support needed.
+  - Keep `streamlit` until the legacy UI is intentionally retired.
+- Create or modify deployment documentation.
+  - `docs/hot_science_fly_ui.md`: local run steps, Fly deploy steps, required secrets, volume setup, and pilot limitations.
+  - Note that Fly secrets are runtime environment variables.
+  - Note that Fly volumes are local persistent storage tied to Machines and not automatically replicated.
+  - Note that the Fly.io deployment is a pilot before migration to AWS/Cognito/AgentCore.
+  - Document how to configure seven pilot users through secrets without committing credentials.
+- Optional later file if needed.
+  - `scripts/build_hot_science_team_report.py` can be refactored to call the same compiler/docx path used by the web backend.
+
+# Calibration examples
+
+- Keep example.
+  - A peer-reviewed April 2026 climate-impact paper with DOI, original source page, confirmed online publication date, abstract evidence, and direct fit to the run criteria.
+  - Expected route: top candidate.
+- Exclude example.
+  - A photovoltaics, EV cost, intervention-performance, or mitigation technology paper without a substantive climate-impact finding.
+  - Expected route: excluded with intervention-only reason.
+- Exclude example.
+  - A pure methods paper whose only contribution is improved retrieval, modeling, sampling, or measurement technique.
+  - Expected route: excluded unless it also produces substantive climate findings.
+- Manual-review example.
+  - A plausible ScienceDaily item where the primary source cannot be verified, the abstract is unavailable, or climate fit is not evidenced in primary metadata.
+  - Expected route: manual review with a plain reason.
+- Wrong-month example.
+  - A press article published after April 2026 whose underlying study was first published outside April 2026.
+  - Expected route: excluded or non-target-month watchlist depending config.
+- Preprint example.
+  - A climate-relevant April 2026 preprint with no peer-reviewed publication yet.
+  - Expected route: preprint bucket if enabled, never mixed into strict top candidates.
+- Artifact example.
+  - A dataset, code release, repository record, or media-only claim without an eligible peer-reviewed paper, formal attribution report, or official data release.
+  - Expected route: excluded or manual review depending source verification.
+- Source-coverage example.
+  - A ScienceDaily article that traces to a DOI-bearing journal article and duplicate OpenAlex/Crossref records.
+  - Expected route: one deduplicated candidate with ScienceDaily grouped as press coverage.
+- UI artifact example.
+  - A completed run with zero preprints, zero source errors, and zero watchlist items.
+  - Expected document: each zero has a one-line explanation.
+- Existing fixtures to extend.
+  - `tests/fixtures/hot_science_calibration_cases.json`.
+  - `tests/test_hot_science_calibration.py`.
+  - `tests/test_hot_science_pipeline.py`.
+
+# Implementation phases
+
+- Phase 1: Service boundary and artifact contract.
+  - Add a backend service wrapper that runs `HotScienceOrchestrator`.
+  - Define run request and run result schemas.
+  - Write artifacts to a configurable data directory.
+  - Produce the primary `.docx` link from a successful run.
+  - Store normalized criteria text, not the original uploaded criteria file.
+  - Keep CLI and Streamlit behavior working.
+- Phase 2: Progress instrumentation.
+  - Add optional progress callbacks to orchestrator and source monitor.
+  - Emit stage and source summaries during a synchronous run.
+  - Add tests proving callbacks do not change candidate routing.
+- Phase 3: FastAPI backend.
+  - Add seven-user username/password-protected API routes.
+  - Add health check.
+  - Add run endpoint.
+  - Add artifact download endpoint with path safety checks.
+  - Add run-history and admin/debug artifact endpoints behind auth.
+  - Add artifact expiration and cleanup behavior.
+  - Add backend tests using a fake orchestrator.
+- Phase 4: React/Vite frontend.
+  - Build the focused run form.
+  - Add paste/upload criteria support.
+  - Add advanced settings panel.
+  - Add stage and source progress display.
+  - Add clean hidden prior-run history.
+  - Add hidden admin/debug artifact access.
+  - End with one primary document download link.
+- Phase 5: Team-facing document polish.
+  - Standardize the Word output used by the web UI.
+  - Include top candidates, manual-review candidates, run configuration, data sources, counts, zero explanations, and source diagnostics.
+  - Keep PDF out of the first release unless conversion reliability is confirmed ahead of schedule.
+  - Add sample-output QA against an April 2026 fixture run.
+- Phase 6: Fly.io deployment.
+  - Add Dockerfile and `fly.toml`.
+  - Mount `/data` for SQLite and generated outputs.
+  - Configure seven pilot users and other secrets with `fly secrets set`.
+  - Configure the app to listen on `0.0.0.0:8080`.
+  - Document that one-machine/one-volume is acceptable for pilot testing but not full production HA.
+  - Document the eventual migration path to the AWS DeepGreen architecture.
+- Phase 7: Pilot QA and handoff.
+  - Run unit tests and pipeline regression tests.
+  - Run frontend build checks.
+  - Smoke-test the app locally.
+  - Deploy to Fly staging.
+  - Run one real April 2026 Hot Science scan.
+  - Confirm the downloaded Word output is suitable for pilot use.
+  - Let the Hot Science team use the deployed Fly.io pilot and provide feedback after hands-on engagement.
+
+# Testing and evaluation
+
+- Unit tests.
+  - Test criteria paste/upload parsing.
+  - Test retrieval query handling.
+  - Test artifact path creation and path traversal rejection.
+  - Test username/password auth success/failure for configured pilot users.
+  - Test artifact retention and expiration rules.
+  - Test run metadata storage in SQLite.
+- Pipeline tests.
+  - Keep existing `tests/test_hot_science_pipeline.py` passing.
+  - Add tests for progress callbacks on successful stages and source errors.
+  - Add tests that CLI output and backend output use the same compiler path.
+- Calibration tests.
+  - Extend `tests/fixtures/hot_science_calibration_cases.json` for keep, exclude, manual review, wrong-month, preprint, artifact, and duplicate coverage examples.
+  - Keep fit-gate behavior strict: missing fit evidence cannot appear as a top candidate.
+- Document tests.
+  - Assert the generated `.docx` contains target month, criteria summary, data sources, counts, zero explanations, and source diagnostics.
+  - Assert the primary team-facing document lists top candidates and manual-review candidates.
+  - Assert excluded candidates do not appear in the primary team-facing document unless an internal/debug export is explicitly requested.
+  - Assert no ambiguous "Fit: Not recorded" label appears in top-candidate output.
+- API tests.
+  - Use FastAPI `TestClient` with a fake orchestrator.
+  - Verify `/health`, login/session behavior, run request validation, progress response, and artifact downloads.
+  - Verify run-history and admin/debug artifact routes require authentication.
+- Frontend tests.
+  - Run TypeScript/build checks.
+  - Test form validation for target month and criteria.
+  - Test advanced settings hidden by default.
+  - Test the final state shows the document link and not a paper table.
+  - Test prior run history is hidden from the main workflow but available through the clean secondary interface.
+- Browser QA.
+  - Use the in-app browser or Playwright after implementation to verify desktop and mobile layouts.
+  - Confirm text does not overlap and the run form remains clean.
+- Deployment checks.
+  - Verify Docker build.
+  - Verify Fly app starts on internal port `8080`.
+  - Verify `/data` is mounted and persists a test artifact across restart.
+  - Verify required secrets are present and no `.env` is baked into the image.
+- Live checks.
+  - Run one constrained live scan after deployment.
+  - Confirm source diagnostics show attempted sources and source errors when they occur.
+  - Compare output against the latest known April 2026 regression baseline.
+  - Confirm expired artifacts are hidden or removed according to retention settings.
+
+# Open questions
+
+- What exact artifact retention period should the pilot use, such as 7, 14, 30, or 60 days?
+- Should the seven pilot credentials literally use the `user1` through `user7` pattern, or should the secret map use team member names/emails with stronger generated passwords?
+- Should the hidden admin/debug interface be available to all seven pilot users or only to you and your immediate team?
+- What Fly.io app name, organization, and region should the pilot use?
+- What date should trigger the first review of Hot Science team feedback and the AWS DeepGreen migration decision?
