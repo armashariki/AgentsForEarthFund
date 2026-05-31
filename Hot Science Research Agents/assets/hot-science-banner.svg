@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" width="1200" height="320" role="img" aria-label="Hot Science Research Agents">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#072a20"/>
+      <stop offset="55%" stop-color="#04150f"/>
+      <stop offset="100%" stop-color="#020b08"/>
+    </linearGradient>
+    <linearGradient id="stripeFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#03100c" stop-opacity="0.74"/>
+      <stop offset="46%" stop-color="#03100c" stop-opacity="0.52"/>
+      <stop offset="100%" stop-color="#03100c" stop-opacity="0.10"/>
+    </linearGradient>
+    <linearGradient id="leftFade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#03100c" stop-opacity="0.92"/>
+      <stop offset="42%" stop-color="#03100c" stop-opacity="0.30"/>
+      <stop offset="100%" stop-color="#03100c" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="ember" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7fe7c4"/>
+      <stop offset="55%" stop-color="#ffd27a"/>
+      <stop offset="100%" stop-color="#ff8a5b"/>
+    </linearGradient>
+    <clipPath id="round"><rect x="0" y="0" width="1200" height="320" rx="18"/></clipPath>
+  </defs>
+
+  <g clip-path="url(#round)">
+    <rect width="1200" height="320" fill="url(#bg)"/>
+    <!-- warming stripes (Ed Hawkins palette) -->
+    <g opacity="0.55">
+      <rect x="0.0" y="0" width="20.5" height="320" fill="#08306b"/>
+      <rect x="20.0" y="0" width="20.5" height="320" fill="#08306b"/>
+      <rect x="40.0" y="0" width="20.5" height="320" fill="#08306b"/>
+      <rect x="60.0" y="0" width="20.5" height="320" fill="#08306b"/>
+      <rect x="80.0" y="0" width="20.5" height="320" fill="#0b4a8f"/>
+      <rect x="100.0" y="0" width="20.5" height="320" fill="#0b4a8f"/>
+      <rect x="120.0" y="0" width="20.5" height="320" fill="#0b4a8f"/>
+      <rect x="140.0" y="0" width="20.5" height="320" fill="#0b4a8f"/>
+      <rect x="160.0" y="0" width="20.5" height="320" fill="#0b4a8f"/>
+      <rect x="180.0" y="0" width="20.5" height="320" fill="#1666b0"/>
+      <rect x="200.0" y="0" width="20.5" height="320" fill="#1666b0"/>
+      <rect x="220.0" y="0" width="20.5" height="320" fill="#1666b0"/>
+      <rect x="240.0" y="0" width="20.5" height="320" fill="#1666b0"/>
+      <rect x="260.0" y="0" width="20.5" height="320" fill="#1666b0"/>
+      <rect x="280.0" y="0" width="20.5" height="320" fill="#2b86c5"/>
+      <rect x="300.0" y="0" width="20.5" height="320" fill="#2b86c5"/>
+      <rect x="320.0" y="0" width="20.5" height="320" fill="#2b86c5"/>
+      <rect x="340.0" y="0" width="20.5" height="320" fill="#2b86c5"/>
+      <rect x="360.0" y="0" width="20.5" height="320" fill="#5ba7d0"/>
+      <rect x="380.0" y="0" width="20.5" height="320" fill="#5ba7d0"/>
+      <rect x="400.0" y="0" width="20.5" height="320" fill="#5ba7d0"/>
+      <rect x="420.0" y="0" width="20.5" height="320" fill="#5ba7d0"/>
+      <rect x="440.0" y="0" width="20.5" height="320" fill="#94c4df"/>
+      <rect x="460.0" y="0" width="20.5" height="320" fill="#94c4df"/>
+      <rect x="480.0" y="0" width="20.5" height="320" fill="#94c4df"/>
+      <rect x="500.0" y="0" width="20.5" height="320" fill="#94c4df"/>
+      <rect x="520.0" y="0" width="20.5" height="320" fill="#c6dbef"/>
+      <rect x="540.0" y="0" width="20.5" height="320" fill="#c6dbef"/>
+      <rect x="560.0" y="0" width="20.5" height="320" fill="#c6dbef"/>
+      <rect x="580.0" y="0" width="20.5" height="320" fill="#e6eff7"/>
+      <rect x="600.0" y="0" width="20.5" height="320" fill="#e6eff7"/>
+      <rect x="620.0" y="0" width="20.5" height="320" fill="#e6eff7"/>
+      <rect x="640.0" y="0" width="20.5" height="320" fill="#e6eff7"/>
+      <rect x="660.0" y="0" width="20.5" height="320" fill="#fde3d0"/>
+      <rect x="680.0" y="0" width="20.5" height="320" fill="#fde3d0"/>
+      <rect x="700.0" y="0" width="20.5" height="320" fill="#fde3d0"/>
+      <rect x="720.0" y="0" width="20.5" height="320" fill="#fcc9a8"/>
+      <rect x="740.0" y="0" width="20.5" height="320" fill="#fcc9a8"/>
+      <rect x="760.0" y="0" width="20.5" height="320" fill="#fcc9a8"/>
+      <rect x="780.0" y="0" width="20.5" height="320" fill="#fcaa78"/>
+      <rect x="800.0" y="0" width="20.5" height="320" fill="#fcaa78"/>
+      <rect x="820.0" y="0" width="20.5" height="320" fill="#fcaa78"/>
+      <rect x="840.0" y="0" width="20.5" height="320" fill="#fcaa78"/>
+      <rect x="860.0" y="0" width="20.5" height="320" fill="#fb8a52"/>
+      <rect x="880.0" y="0" width="20.5" height="320" fill="#fb8a52"/>
+      <rect x="900.0" y="0" width="20.5" height="320" fill="#fb8a52"/>
+      <rect x="920.0" y="0" width="20.5" height="320" fill="#f16c43"/>
+      <rect x="940.0" y="0" width="20.5" height="320" fill="#f16c43"/>
+      <rect x="960.0" y="0" width="20.5" height="320" fill="#f16c43"/>
+      <rect x="980.0" y="0" width="20.5" height="320" fill="#e04530"/>
+      <rect x="1000.0" y="0" width="20.5" height="320" fill="#e04530"/>
+      <rect x="1020.0" y="0" width="20.5" height="320" fill="#e04530"/>
+      <rect x="1040.0" y="0" width="20.5" height="320" fill="#c5271d"/>
+      <rect x="1060.0" y="0" width="20.5" height="320" fill="#c5271d"/>
+      <rect x="1080.0" y="0" width="20.5" height="320" fill="#c5271d"/>
+      <rect x="1100.0" y="0" width="20.5" height="320" fill="#a01016"/>
+      <rect x="1120.0" y="0" width="20.5" height="320" fill="#a01016"/>
+      <rect x="1140.0" y="0" width="20.5" height="320" fill="#a01016"/>
+      <rect x="1160.0" y="0" width="20.5" height="320" fill="#67000d"/>
+      <rect x="1180.0" y="0" width="20.5" height="320" fill="#67000d"/>
+    </g>
+    <rect width="1200" height="320" fill="url(#stripeFade)"/>
+    <rect width="1200" height="320" fill="url(#leftFade)"/>
+
+    <!-- thin accent rule -->
+    <rect x="64" y="186" width="120" height="3" rx="1.5" fill="url(#ember)"/>
+
+    <!-- eyebrow -->
+    <text x="65" y="84" font-family="Helvetica Neue, Arial, sans-serif" font-size="16" letter-spacing="5"
+          fill="#7fe7c4" font-weight="600">DEEPGREEN  ·  BEZOS EARTH FUND</text>
+
+    <!-- title -->
+    <text x="62" y="156" font-family="Georgia, 'Times New Roman', serif" font-size="60" fill="#ffffff" font-weight="700">Hot Science <tspan fill="#ffce73">Research Agents</tspan></text>
+
+    <!-- tagline -->
+    <text x="65" y="222" font-family="Helvetica Neue, Arial, sans-serif" font-size="21" fill="#d6efe6">Finds the month&#8217;s most significant climate &amp; Earth-system research</text>
+    <text x="65" y="252" font-family="Helvetica Neue, Arial, sans-serif" font-size="21" fill="#9fc4b6">— resolved to primary sources, verified, scored, and report-ready.</text>
+
+    <!-- source chips -->
+    <text x="65" y="294" font-family="'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="12.5" letter-spacing="0.5"
+          fill="#79a99a">OpenAlex · Crossref · Nature · Science · PNAS · AGU · EGU · NOAA · NSIDC · WWA</text>
+  </g>
+  <rect x="0.5" y="0.5" width="1199" height="319" rx="18" fill="none" stroke="#1f4a3c" stroke-width="1"/>
+</svg>
